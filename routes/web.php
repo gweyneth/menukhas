@@ -1,0 +1,35 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Di sinilah Anda dapat mendaftarkan rute web untuk aplikasi Anda. Rute-rute
+| ini dimuat oleh RouteServiceProvider dan semuanya akan
+| ditugaskan ke grup middleware "web". Buat sesuatu yang hebat!
+|
+*/
+
+// Route untuk halaman utama (opsional, contoh)
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// Route dashboard yang dibuat oleh Breeze
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route profile yang dibuat oleh Breeze
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Memuat semua route autentikasi dari Breeze
+require __DIR__.'/auth.php';
